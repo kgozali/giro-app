@@ -4,16 +4,17 @@
 @section('content')
 <body>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">    
+    <!-- <link href="css/bootstrap.css" rel="stylesheet">     -->
 
     <form method="get" action="/" enctype="multipart/form-data">
         <div class="input-group mb-3">
-            <input name="keyword" type="text" class="form-control" placeholder="Cari Transaksi" aria-label="Search For Giro" aria-describedby="button-addon2" value="{{ $keyword }}">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+            <input name="keyword" type="text" class="form-control" placeholder="Cari Transaksi" aria-label="Search For Giro" aria-describedby="button-addon2" value="{{ $keyword }}" {{ $transactions->isEmpty() ? 'disabled' : '' }}>
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" {{ $transactions->isEmpty() ? 'disabled' : '' }}>Search</button>
         </div>
     </form>
     
 
+    @if(! $transactions->isEmpty())
     <div class="dropdown mb-3">
         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSort" data-bs-toggle="dropdown" aria-expanded="false">
             Urutkan
@@ -55,10 +56,12 @@
     <div class="d-flex justify-content-center">
         {!! $transactions->links() !!}
     </div>
+    @endif
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
         <button type="button" class="btn btn-primary btn-lg" onclick="window.location='{{ route('new_giro') }}'">Add</button>
-      <button type="button" class="btn btn-success btn-lg" onclick="window.location='{{ route('select_report') }}'">Print</button>
+        <button {{ $transactions->isEmpty() ? 'disabled' : '' }} type="button" class="btn btn-success btn-lg" onclick="window.location='{{ route('select_monthly_report') }}'">Print</button>
+        <button {{ $transactions->isEmpty() ? 'disabled' : '' }} type="button" class="btn btn-success btn-lg" onclick="window.location='{{ route('select_periodic_report') }}'">Periodic</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>

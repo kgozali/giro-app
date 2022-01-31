@@ -26,4 +26,6 @@ Route::post('/submit', [TransactionsController::class, 'submit'])->name("submit"
 
 Route::post('/submit/edit/{id}', [TransactionsController::class, 'edit'])->name("edit");
 
-Route::get('/report', [ReportController::class, 'select'])->name("select_report");
+Route::get('/report/monthly', [ReportController::class, 'getMonthlyReport'])->name("select_monthly_report");
+
+Route::get('/report/periodic', [ReportController::class, 'getPeriodicReport'])->name("select_periodic_report");

@@ -5,22 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\GiroTransaction;
+use App\Models\Period;
 use Illuminate\Routing\Redirector;
 use Illuminate\Database\Query\Builder;
 use DateTime;
 
 
 class ReportController extends Controller {
-    public function select() {
+    public function getMonthlyReport() {
         $month = request('month');
         $year = request('year');
 
         if ($month == null || $year == null) {
-            return view('report.selection');
+            return view('report.monthly.monthly_report_selection');
         } else {
-            $dateObj   = DateTime::createFromFormat('!m', $month);
-            $monthName = $dateObj->format('F');
-            $transactions = GiroTransaction::whereMonth('giro_date', $month)
+            $date_obj = DateTime::createFromFormat('!m', $month);
+            $month_name = $date_obj->format('F');
+            $transactions = GiroTransaction::leftJoin('master_period', function($join) {
+                    $join->on('giro_transaction.id_period', '=', 'master_period.id');
+                })
+                ->whereMonth('giro_date', $month)
                 ->whereYear('giro_date', $year)
                 ->orderBy('giro_date', 'ASC')
                 ->get();
@@ -29,40 +33,71 @@ class ReportController extends Controller {
                 ->whereYear('giro_date', $year)
                 ->sum('amount');
 
-            $summary = DB::select(DB::raw("
-                SELECT SUM(A.total) as total, A.start_date, A.end_date
+            $subtotal = DB::select(DB::raw("
+                SELECT SUM(A.total) as total, A.start_date, A.end_date, A.period, A.period_id
                 FROM (
                     SELECT 
-                        SUM(amount) as total, 
+                        IFNULL(SUM(gt.amount), 0) as total, 
                         (CASE 
-                            when day(giro_date) <= 5 then DATE_FORMAT(giro_date,'%Y-%m-01')
-                            when day(giro_date) <= 10 then DATE_FORMAT(giro_date,'%Y-%m-6')
-                            when day(giro_date) <= 15 then DATE_FORMAT(giro_date,'%Y-%m-11')
-                            when day(giro_date) <= 20 then DATE_FORMAT(giro_date,'%Y-%m-16')
-                            when day(giro_date) <= 25 then DATE_FORMAT(giro_date,'%Y-%m-21')
-                            else DATE_FORMAT(giro_date,'%Y-%m-26')
+                            when day(gt.giro_date) <= 5 then DATE_FORMAT(gt.giro_date,'%Y-%m-01')
+                            when day(gt.giro_date) <= 10 then DATE_FORMAT(gt.giro_date,'%Y-%m-6')
+                            when day(gt.giro_date) <= 15 then DATE_FORMAT(gt.giro_date,'%Y-%m-11')
+                            when day(gt.giro_date) <= 20 then DATE_FORMAT(gt.giro_date,'%Y-%m-16')
+                            when day(gt.giro_date) <= 25 then DATE_FORMAT(gt.giro_date,'%Y-%m-21')
+                            else DATE_FORMAT(gt.giro_date,'%Y-%m-26')
                         END) as `start_date`,
                         (CASE 
-                            when day(giro_date) <= 5 then DATE_FORMAT(giro_date,'%Y-%m-5')
-                            when day(giro_date) <= 10 then DATE_FORMAT(giro_date,'%Y-%m-10')
-                            when day(giro_date) <= 15 then DATE_FORMAT(giro_date,'%Y-%m-15')
-                            when day(giro_date) <= 20 then DATE_FORMAT(giro_date,'%Y-%m-20')
-                            when day(giro_date) <= 25 then DATE_FORMAT(giro_date,'%Y-%m-25')
-                            else LAST_DAY(giro_date)
-                        END) as `end_date`
-                        FROM giro_transaction
-                        WHERE MONTH(giro_date) = :month AND YEAR(giro_date) = :year
-                        GROUP BY giro_date
+                            when day(gt.giro_date) <= 5 then DATE_FORMAT(gt.giro_date,'%Y-%m-5')
+                            when day(gt.giro_date) <= 10 then DATE_FORMAT(gt.giro_date,'%Y-%m-10')
+                            when day(gt.giro_date) <= 15 then DATE_FORMAT(gt.giro_date,'%Y-%m-15')
+                            when day(gt.giro_date) <= 20 then DATE_FORMAT(gt.giro_date,'%Y-%m-20')
+                            when day(gt.giro_date) <= 25 then DATE_FORMAT(gt.giro_date,'%Y-%m-25')
+                            else LAST_DAY(gt.giro_date)
+                        END) as `end_date`,
+                        mp.id `period_id`,
+                        mp.name `period`
+                        FROM giro_transaction gt
+                        LEFT JOIN master_period mp ON mp.id = gt.id_period
+                        WHERE MONTH(gt.giro_date) = :month AND YEAR(gt.giro_date) = :year
+                        GROUP BY gt.giro_date, mp.id, mp.name
                         ORDER BY DAY(start_date)
                 ) as A    
-                GROUP BY A.start_date, A.end_date
-                ORDER BY DAY(A.start_date)
+                GROUP BY A.start_date, A.end_date, A.period_id, A.period
+                ORDER BY DAY(A.start_date), A.period_id
             "), array(
                 'month' => $month,
                 'year' => $year
             ));
 
-            return view('report.view', compact('transactions', 'summary', 'monthName', 'year', 'total_amount'));
+            $summary = collect($subtotal)
+                ->groupBy('start_date')
+                ->map(function ($group, $keys) {
+                    return [
+                        'total' => $group->sum('total'),
+                        'start_date' => $group->first()->start_date,
+                        'end_date' => $group->first()->end_date
+                    ];
+                });
+
+            return view('report.monthly.monthly_report', compact('transactions', 'summary', 'subtotal', 'month_name', 'year', 'total_amount'));
+        }
+    }
+
+    public function getPeriodicReport() {
+        $period = request('period');
+
+        if ($period == null) {
+            $periods = Period::all();
+            return view('report.periodic.periodic_report_selection', compact('periods'));
+        } else {
+            $transactions = GiroTransaction::where('id_period', $period)
+                ->orderBy('giro_number', 'ASC')
+                ->get();
+
+            $summary = collect($transactions)->sum('amount');
+            $period = Period::whereId($period)->first();
+
+            return view('report.periodic.periodic_report', compact('transactions', 'summary', 'period'));
         }
     }
 }

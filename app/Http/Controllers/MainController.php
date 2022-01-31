@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\GiroTransaction;
 use Illuminate\Routing\Redirector;
 
-
 class MainController extends Controller {
     public function index() {
         $keyword = request('keyword');
@@ -29,7 +28,7 @@ class MainController extends Controller {
                     'edit_url' => route('view', $transaction->id)
                 ];
             });
-       
+            
         return view('home', compact('transactions', 'keyword', 'sort', 'sort_order'));
     }
 }
