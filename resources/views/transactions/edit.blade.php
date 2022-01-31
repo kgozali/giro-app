@@ -10,6 +10,9 @@
     <div class="form-group mb-3">
         <label for="giroInput" class="form-label">No. Giro</label>
         <input name="giro_number" type="number" class="form-control" id="giroInput" placeholder="Angka 6-Digit Giro" value="{{ $transaction->giro_number }}">
+        @error ('giro_number')
+            <label class="form-label text-danger">{{ $errors->first('giro_number') }}</label>
+        @enderror
     </div>
 
     <div class="form-group mb-3">
@@ -37,7 +40,7 @@
     </div>
 
     <div class="form-check form-switch mt-3">
-      <input class="form-check-input" type="checkbox" id="is_void" name="is_void">
+      <input class="form-check-input" type="checkbox" id="is_void" name="is_void" {{ $transaction->is_void == 1 ? 'checked' : '' }}>
       <label class="form-check-label" for="is_void">Batalkan Giro / Void Giro</label>
     </div>
 

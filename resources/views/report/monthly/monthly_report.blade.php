@@ -9,8 +9,8 @@
     @foreach($summary as $group)
     <h4 class="mt-4 text-muted">{{ date('j F Y', strtotime($group['start_date'])) . ' s/d ' . date('j F Y', strtotime($group['end_date'])) }}</h4>
 
-    <table class="table table-striped table-bordered">
-        <thead class="table-dark">
+    <table class="table table-bordered">
+        <thead class="table-light">
             <tr>
                 <th style="width: 20%" scope="col-md-4">No. Giro</th>
                 <th style="width: 20%" scope="col-md-4">Periode Belanja</th>
@@ -67,7 +67,7 @@
         <thead class="table-light">
             <tr class="table-success">
                 <th style="width: 60%" colspan=3></th>
-                <th style="width: 20%">GRAND TOTAL</th>
+                <th style="width: 20%">TOTAL</th>
                 <th style="width: 20%">{{ number_format($total_amount, 0) }}</th>
             </tr>
         </thead>

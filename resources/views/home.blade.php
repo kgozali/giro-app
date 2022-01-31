@@ -30,8 +30,8 @@
         </ul>
     </div>
 
-    <table class="table table-striped table-bordered">
-        <thead class="table-dark">
+    <table class="table table-bordered">
+        <thead class="table-light">
             <tr>
             <th scope="col">No. Giro</th>
             <th scope="col">Tgl. Giro</th>
@@ -44,7 +44,7 @@
             @foreach($transactions as $transaction)
                 <tr>
                     <td>{{ $transaction['giro_number'] }}</td>
-                    <td>{{ date('j-M-Y', strtotime($transaction['giro_date'])) }}</td>
+                    <td>{{ date('j M Y', strtotime($transaction['giro_date'])) }}</td>
                     <td>{{ number_format($transaction['amount'], 0) }}</td>
                     <td>{{ $transaction['customer_name'] }}</td>
                     <td><a href="{{ $transaction['edit_url'] }}">Edit</a></td>

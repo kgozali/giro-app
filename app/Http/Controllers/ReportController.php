@@ -26,11 +26,13 @@ class ReportController extends Controller {
                 })
                 ->whereMonth('giro_date', $month)
                 ->whereYear('giro_date', $year)
+                ->where('is_void', 0)
                 ->orderBy('giro_date', 'ASC')
                 ->get();
 
             $total_amount = GiroTransaction::whereMonth('giro_date', $month)
                 ->whereYear('giro_date', $year)
+                ->where('is_void', 0)
                 ->sum('amount');
 
             $subtotal = DB::select(DB::raw("
@@ -58,7 +60,7 @@ class ReportController extends Controller {
                         mp.name `period`
                         FROM giro_transaction gt
                         LEFT JOIN master_period mp ON mp.id = gt.id_period
-                        WHERE MONTH(gt.giro_date) = :month AND YEAR(gt.giro_date) = :year
+                        WHERE MONTH(gt.giro_date) = :month AND YEAR(gt.giro_date) = :year AND gt.is_void = 0
                         GROUP BY gt.giro_date, mp.id, mp.name
                         ORDER BY DAY(start_date)
                 ) as A    
@@ -91,10 +93,11 @@ class ReportController extends Controller {
             return view('report.periodic.periodic_report_selection', compact('periods'));
         } else {
             $transactions = GiroTransaction::where('id_period', $period)
+                ->selectRaw("*, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
                 ->orderBy('giro_number', 'ASC')
                 ->get();
 
-            $summary = collect($transactions)->sum('amount');
+            $summary = collect($transactions)->where('is_void', 0)->sum('amount');
             $period = Period::whereId($period)->first();
 
             return view('report.periodic.periodic_report', compact('transactions', 'summary', 'period'));

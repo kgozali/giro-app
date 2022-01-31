@@ -10,7 +10,10 @@
 
     <div class="form-group mb-3">
         <label for="giro_number" class="form-label">No. Giro</label>
-        <input name="giro_number" type="number" class="form-control" id="giro_number" placeholder="Angka 6-Digit Giro">
+        <input name="giro_number" type="number" class="form-control {{ ($errors->has('giro_number') ? 'border-danger' : '') }}" id="giro_number" placeholder="Angka 6-Digit Giro">
+        @error ('giro_number')
+            <label class="form-label text-danger">{{ $errors->first('giro_number') }}</label>
+        @enderror
     </div>
 
     <div class="form-group mb-3">

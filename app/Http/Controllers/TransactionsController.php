@@ -25,6 +25,12 @@ class TransactionsController extends Controller {
     public function edit($id) {
         $is_valid = request('is_void') == null;
 
+        $validated = $request->validate([
+            'giro_number' => 'required'
+        ], [
+            'giro_number.required' => 'Isi Nomor Giro'
+        ]);
+
         $transaction = GiroTransaction::find($id)
             ->update([
                 "giro_date" => request('giro_date'),
@@ -42,8 +48,14 @@ class TransactionsController extends Controller {
         return redirect()->route('index');
     }
 
-    public function submit() {
+    public function submit(Request $request) {
         $is_valid = request('is_void') == null;
+
+        $validated = $request->validate([
+            'giro_number' => 'required'
+        ], [
+            'giro_number.required' => 'Isi Nomor Giro'
+        ]);
 
         $param = [
             "giro_date" => request('giro_date'),
