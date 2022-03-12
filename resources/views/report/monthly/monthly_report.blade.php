@@ -12,7 +12,8 @@
     <table class="table table-bordered">
         <thead class="table-light">
             <tr>
-                <th style="width: 20%" scope="col-md-4">No. Giro</th>
+                <th style="width: 5%" scope="col-md-4">No.</th>
+                <th style="width: 15%" scope="col-md-4">No. Giro</th>
                 <th style="width: 20%" scope="col-md-4">Periode Belanja</th>
                 <th style="width: 20%" scope="col-md-4">Tgl. Giro</th>
                 <th style="width: 20%" scope="col-md-4">Nama Toko</th>
@@ -29,11 +30,12 @@
 
                 @if(($data_giro_date >= $data_start_date) && ($data_giro_date <= $data_end_date))
                     <tr>
+                        <td>{{ ($loop->index) + 1 }}</td>
                         <td>{{ $transaction['giro_number'] }}</td>
                         <td>{{ $transaction['name'] }}</td>
                         <td>{{ date('j M Y', strtotime($transaction['giro_date'])) }}</td>
                         <td>{{ $transaction['customer_name'] }}</td>
-                        <td>{{ number_format($transaction['amount'], 0) }}</td>
+                        <td class="text-right">{{ number_format($transaction['amount'], 0) }}</td>
                     </tr>
                 @endif
             @endforeach
@@ -47,7 +49,7 @@
 
                 @if(($subtotal_start_date == $subtotal_giro_date))
                     <tr class="table-info">
-                        <th style="width: 60%" colspan=3></th>
+                        <th style="width: 60%" colspan=4></th>
                         <th style="width: 20%">{{ $sub->period }}</th>
                         <th style="width: 20%">{{ number_format($sub->total, 0) }}</th>
                     </tr>
@@ -55,7 +57,7 @@
             @endforeach
 
             <tr class="table-warning">
-                <th style="width: 60%" colspan=3></th>
+                <th style="width: 60%" colspan=4></th>
                 <th style="width: 20%">SUBTOTAL</th>
                 <th style="width: 20%">{{ number_format($group['total'], 0) }}</th>
             </tr>

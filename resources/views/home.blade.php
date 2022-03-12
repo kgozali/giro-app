@@ -42,7 +42,7 @@
         </thead>
         <tbody>
             @foreach($transactions as $transaction)
-                <tr>
+                <tr class="{{ $transaction['is_void'] == '1' ? 'table-danger' : '' }}">
                     <td>{{ $transaction['giro_number'] }}</td>
                     <td>{{ date('j M Y', strtotime($transaction['giro_date'])) }}</td>
                     <td>{{ number_format($transaction['amount'], 0) }}</td>

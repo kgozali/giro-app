@@ -22,9 +22,9 @@ class TransactionsController extends Controller {
         return view('transactions.edit', compact('transaction', 'periods'));
     }
 
-    public function edit($id) {
+    public function edit($id, Request $request) {
         $is_valid = request('is_void') == null;
-
+        
         $validated = $request->validate([
             'giro_number' => 'required'
         ], [

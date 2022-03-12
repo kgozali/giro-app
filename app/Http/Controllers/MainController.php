@@ -25,6 +25,7 @@ class MainController extends Controller {
                     'giro_date' => $transaction->giro_date,
                     'amount' => $transaction->amount,
                     'customer_name' => $transaction->customer_name,
+                    'is_void' => $transaction->is_void,
                     'edit_url' => route('view', $transaction->id)
                 ];
             });
