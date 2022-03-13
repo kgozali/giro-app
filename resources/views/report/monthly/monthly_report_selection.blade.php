@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pilih Tanggal')
+@section('title', 'Pilih Bulan & Tahun')
 @section('content')
 <body>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

@@ -16,7 +16,7 @@ class MainController extends Controller {
             ->orWhere('giro_number', 'LIKE', '%'.$keyword.'%')
             ->orWhere('amount', 'LIKE', '%'.$keyword.'%')
             ->orderBy($sort, $sort_order)
-            ->paginate(20)
+            ->paginate(50)
             ->through(function($transaction, $key){
                 return [
                     'id' => $transaction->id,
