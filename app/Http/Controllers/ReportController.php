@@ -89,7 +89,9 @@ class ReportController extends Controller {
         $period = request('period');
 
         if ($period == null) {
-            $periods = Period::all();
+            $periods = Period::where('is_active', 1)
+                ->orderBy('id', 'DESC')
+                ->get();
             return view('report.periodic.periodic_report_selection', compact('periods'));
         } else {
             $transactions = GiroTransaction::where('id_period', $period)

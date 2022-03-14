@@ -21,7 +21,7 @@
         <div class="form-group mb-3">
             <label for="year" class="form-label font-weight-bold">Tahun</label>
             <select class="mb-3 form-select form-control-lg" name="year">
-                @for ($year = date('Y'); $year > date('Y') - 100; $year--)
+                @for ($year = date('Y'); $year > date('Y') - 10; $year--)
                     <option value="{{$year}}">
                         {{$year}}
                     </option>

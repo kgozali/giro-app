@@ -9,7 +9,7 @@
     {{ csrf_field() }}
     <div class="form-group mb-3">
         <label for="giroInput" class="form-label">No. Giro</label>
-        <input name="giro_number" type="number" class="form-control" id="giroInput" placeholder="Angka 6-Digit Giro" value="{{ $transaction->giro_number }}">
+        <input name="giro_number" type="number" class="form-control {{ ($errors->has('giro_number') ? 'border-danger' : '') }}" id="giroInput" placeholder="Angka 6-Digit Giro" value="{{ $transaction->giro_number }}">
         @error ('giro_number')
             <label class="form-label text-danger">{{ $errors->first('giro_number') }}</label>
         @enderror
@@ -26,20 +26,29 @@
 
     <div class="form-group mb-3">
         <label for="giroDate" class="form-label">Tgl. Bukaan Giro</label>
-        <input name="giro_date" type="date" class="form-control" id="giroDate" placeholder="Pilih Tanggal" value="{{ $transaction->giro_date }}">
+        <input name="giro_date" type="date" class="form-control {{ ($errors->has('giro_date') ? 'border-danger' : '') }}" id="giroDate" placeholder="Pilih Tanggal" value="{{ $transaction->giro_date }}">
+        @error ('giro_date')
+            <label class="form-label text-danger">{{ $errors->first('giro_date') }}</label>
+        @enderror
     </div>
 
     <div class="form-group mb-3">
         <label for="nominalInput" class="form-label">Nominal</label>
-        <input name="amount" class="form-control" id="amount" type="text" placeholder="Total Bukaan Giro" value="{{ $transaction->amount }}"></textarea>
+        <input name="amount" class="form-control {{ ($errors->has('amount') ? 'border-danger' : '') }}" id="amount" type="text" placeholder="Total Bukaan Giro" value="{{ $transaction->amount }}"></textarea>
+        @error ('amount')
+            <label class="form-label text-danger">{{ $errors->first('amount') }}</label>
+        @enderror
     </div>
 
     <div class="form-group mb-3">
         <label for="nameInput" class="form-label">Nama Toko</label>
-        <input name="store_name" class="form-control" id="nameInput" type="text" placeholder="Nama Toko" value="{{ $transaction->customer_name }}"></textarea>
+        <input name="store_name" class="form-control {{ ($errors->has('store_name') ? 'border-danger' : '') }}" id="nameInput" type="text" placeholder="Nama Toko" value="{{ $transaction->customer_name }}"></textarea>
+        @error ('store_name')
+            <label class="form-label text-danger">{{ $errors->first('store_name') }}</label>
+        @enderror
     </div>
 
-    <div class="form-check form-switch mt-3">
+    <div class="form-check form-switch mt-3 mb-3">
       <input class="form-check-input" type="checkbox" id="is_void" name="is_void" {{ $transaction->is_void == 1 ? 'checked' : '' }}>
       <label class="form-check-label" for="is_void">Batalkan Giro / Void Giro</label>
     </div>

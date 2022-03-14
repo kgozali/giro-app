@@ -16,6 +16,10 @@
 
    
     <div class="dropdown mb-3 d-grid gap-2 d-md-flex justify-content-md-start">
+        <button type="button" class="btn btn-primary btn-lg" onclick="window.location='{{ route('new_giro') }}'">Tambah</button>
+        <button type="button" class="btn btn-success btn-lg" onclick="window.location='{{ route('select_monthly_report') }}'">Bulanan</button>
+        <button type="button" class="btn btn-success btn-lg" onclick="window.location='{{ route('select_periodic_report') }}'">Periode</button>
+        
         @if(! $transactions->isEmpty())
         <a class="btn btn-secondary btn-lg dropdown-toggle" href="#" role="button" id="dropdownSort" data-bs-toggle="dropdown" aria-expanded="false">
             Urutkan
@@ -29,9 +33,6 @@
             <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'amount', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">Nominal Terkecil</a></li>
         </ul>  
         @endif 
-        <button type="button" class="btn btn-primary btn-lg" onclick="window.location='{{ route('new_giro') }}'">Tambah</button>
-        <button type="button" class="btn btn-success btn-lg" onclick="window.location='{{ route('select_monthly_report') }}'">Bulanan</button>
-        <button type="button" class="btn btn-success btn-lg" onclick="window.location='{{ route('select_periodic_report') }}'">Periode</button>
     </div>
     
 
