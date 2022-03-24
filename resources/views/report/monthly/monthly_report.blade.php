@@ -5,16 +5,20 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <h2 class="mb-4">{{ 'Laporan Bulanan Giro' . ' ' . $month_name . ' ' . $year }}</h4>
+    
+    @php
+        $row = 0;
+    @endphp
 
     @foreach($summary as $group)
-    <h4 class="mt-4 text-muted">{{ date('j F Y', strtotime($group['start_date'])) . ' s/d ' . date('j F Y', strtotime($group['end_date'])) }}</h4>
+    <h4 class="mt-4 text-muted">{{ \Carbon\Carbon::parse($group['start_date'])->isoFormat('DD MMMM Y') . ' s/d ' . \Carbon\Carbon::parse($group['end_date'])->isoFormat('DD MMMM Y') }}</h4>
 
     <table class="table table-bordered">
         <thead class="table-light">
             <tr>
                 <th style="width: 5%" scope="col-md-4">No.</th>
-                <th style="width: 15%" scope="col-md-4">No. Giro</th>
-                <th style="width: 20%" scope="col-md-4">Periode Belanja</th>
+                <th style="width: 10%" scope="col-md-4">No. Giro</th>
+                <th style="width: 25%" scope="col-md-4">Periode Belanja</th>
                 <th style="width: 20%" scope="col-md-4">Tgl. Giro</th>
                 <th style="width: 20%" scope="col-md-4">Nama Toko</th>
                 <th style="width: 20%" scope="col-md-4">Nominal</th>
@@ -29,20 +33,23 @@
                 @endphp
 
                 @if(($data_giro_date >= $data_start_date) && ($data_giro_date <= $data_end_date))
+                    @php
+                        $row += 1
+                    @endphp
                     <tr>
-                        <td>{{ ($loop->index) + 1 }}</td>
+                        <td>{{ $row }}</td>
                         <td>{{ $transaction['giro_number'] }}</td>
                         <td>{{ $transaction['name'] }}</td>
-                        <td>{{ date('j M Y', strtotime($transaction['giro_date'])) }}</td>
+                        <td>{{ \Carbon\Carbon::parse($transaction['giro_date'])->isoFormat('DD MMMM Y') }}</td>
                         <td>{{ $transaction['customer_name'] }}</td>
                         <td class="text-right">{{ number_format($transaction['amount'], 0) }}</td>
                     </tr>
                 @endif
             @endforeach
         </tbody>
-        <tfoot>
+        <table class="table table-bordered">
             @foreach($subtotal as $sub)
-                    @php
+                @php
                     $subtotal_start_date = strtotime($sub->start_date);
                     $subtotal_giro_date = strtotime($group['start_date']);
                 @endphp
@@ -61,7 +68,7 @@
                 <th style="width: 20%">SUBTOTAL</th>
                 <th style="width: 20%">{{ number_format($group['total'], 0) }}</th>
             </tr>
-        </tfoot>
+        </table>
     </table>
     @endforeach
 

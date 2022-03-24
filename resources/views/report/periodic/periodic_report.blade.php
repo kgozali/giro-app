@@ -23,7 +23,7 @@
                <tr class={{ $transaction['is_void'] == 1 ? 'table-danger' : '' }}>
                     <td>{{ ($loop->index) + 1 }}</td>
                     <td>{{ $transaction['giro_number'] }}</td>
-                    <td>{{ date('j M Y', strtotime($transaction['giro_date'])) }}</td>
+                    <td>{{ \Carbon\Carbon::parse($transaction['giro_date'])->isoFormat('DD MMMM Y') }}</td>
                     <td>{{ $transaction['customer_name'] }}</td>
                     <td><b>{{ $transaction['status'] }}</b></td>
                     @if($transaction['is_void'] == 1)

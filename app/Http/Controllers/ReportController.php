@@ -9,6 +9,7 @@ use App\Models\Period;
 use Illuminate\Routing\Redirector;
 use Illuminate\Database\Query\Builder;
 use DateTime;
+use Illuminate\Support\Carbon;
 
 
 class ReportController extends Controller {
@@ -20,13 +21,14 @@ class ReportController extends Controller {
             return view('report.monthly.monthly_report_selection');
         } else {
             $date_obj = DateTime::createFromFormat('!m', $month);
-            $month_name = $date_obj->format('F');
+            $month_name = Carbon::parse($date_obj)->isoFormat('MMMM');
             $transactions = GiroTransaction::leftJoin('master_period', function($join) {
                     $join->on('giro_transaction.id_period', '=', 'master_period.id');
                 })
                 ->whereMonth('giro_date', $month)
                 ->whereYear('giro_date', $year)
                 ->where('is_void', 0)
+                ->orderBy('id_period', 'ASC')
                 ->orderBy('giro_date', 'ASC')
                 ->get();
 

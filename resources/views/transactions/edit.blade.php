@@ -5,7 +5,7 @@
 <body>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-  <form method="post" action="{{ route('edit', $transaction->id) }}" enctype="multipart/form-data" method="POST">
+  <form action="{{ route('edit', $transaction->id) }}" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
     <div class="form-group mb-3">
         <label for="giroInput" class="form-label">No. Giro</label>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="form-group d-grid gap-2 d-md-flex justify-content-md-end">
-      <button type="button" class="btn btn-danger btn-lg">Cancel</button>
+      <button type="button" class="btn btn-danger btn-lg" onclick="window.location='{{ route('index') }}'">Cancel</button>
       <button type="submit" class="btn btn-primary btn-lg">Save</button>
     </div>
   </form>
