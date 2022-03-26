@@ -29,3 +29,5 @@ Route::post('/submit/edit/{id}', [TransactionsController::class, 'edit'])->middl
 Route::get('/report/monthly', [ReportController::class, 'getMonthlyReport'])->middleware('auth.basic')->name("select_monthly_report");
 
 Route::get('/report/periodic', [ReportController::class, 'getPeriodicReport'])->middleware('auth.basic')->name("select_periodic_report");
+
+Route::get('/report/monthperiod', [ReportController::class, 'getMonthlyPeriodicReport'])->middleware('auth.basic')->name("select_monthly_periodic_report");

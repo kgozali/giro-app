@@ -12,7 +12,13 @@ class MainController extends Controller {
         $keyword = request('keyword');
         $sort = request('sort') ?? 'giro_date';
         $sort_order = request('sort_order') ?? 'desc';
-        $transactions = GiroTransaction::where('customer_name', 'LIKE', '%'.$keyword.'%')
+        $transactions = GiroTransaction::select('giro_transaction.id', 'created_at', 'giro_number', 'giro_date', 'amount', 'customer_name', 'is_void')
+            ->leftJoin('master_period', function($join) {
+                $join->on('giro_transaction.id_period', '=', 'master_period.id');
+            })
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->where('customer_name', 'LIKE', '%'.$keyword.'%')
             ->orWhere('giro_number', 'LIKE', '%'.$keyword.'%')
             ->orWhere('amount', 'LIKE', '%'.$keyword.'%')
             ->orderBy($sort, $sort_order)
