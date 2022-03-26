@@ -11,7 +11,6 @@ use Illuminate\Database\Query\Builder;
 use DateTime;
 use Illuminate\Support\Carbon;
 
-
 class ReportController extends Controller {
     public function getMonthlyReport() {
         $month = request('month');
@@ -22,7 +21,7 @@ class ReportController extends Controller {
         } else {
             $date_obj = DateTime::createFromFormat('!m', $month);
             $month_name = Carbon::parse($date_obj)->isoFormat('MMMM');
-            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, customer_name, is_void')
+            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name), is_void')
                 ->leftJoin('master_period', function($join) {
                     $join->on('giro_transaction.id_period', '=', 'master_period.id');
                 })
@@ -100,7 +99,7 @@ class ReportController extends Controller {
             return view('report.periodic.periodic_report_selection', compact('periods'));
         } else {
             $transactions = GiroTransaction::where('id_period', $period)
-                ->selectRaw("giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, customer_name, is_void, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
+                ->selectRaw("giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name) `customer_name`, is_void, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
                 ->where('is_deleted', 0)
                 ->orderByRaw('CONCAT(giro_code, giro_number) ASC')
                 ->get();
@@ -127,7 +126,7 @@ class ReportController extends Controller {
         } else {
             $date_obj = DateTime::createFromFormat('!m', $month);
             $month_name = Carbon::parse($date_obj)->isoFormat('MMMM');
-            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, customer_name, is_void')
+            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name) `customer_name`, is_void')
                 ->leftJoin('master_period', function($join) {
                     $join->on('giro_transaction.id_period', '=', 'master_period.id');
                 })
@@ -195,6 +194,32 @@ class ReportController extends Controller {
                 });
 
             return view('report.monthly.monthly_report', compact('transactions', 'summary', 'subtotal', 'month_name', 'year', 'total_amount'));
+        }
+    }
+
+    public function getGiroBookReport() {
+        $code = request('giro_code');
+        $min = request('giro_number_min');
+        $max = request('giro_number_max');
+        
+        if ($code == null || $min == null || $max == null) {
+            $giro_codes = GiroTransaction::select('giro_code')
+                ->groupBy('giro_code')
+                ->get();
+            return view('report.girobook.giro_book_selection', compact('giro_codes'));
+        } else {
+            $transactions = GiroTransaction::selectRaw("giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name) `customer_name`, is_void, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
+                ->whereRaw("CONVERT(giro_number, UNSIGNED) BETWEEN ? AND ?", [$min, $max])
+                ->where('giro_code', $code)
+                ->where('is_deleted', 0)
+                ->orderByRaw('CONCAT(giro_code, giro_number) ASC')
+                ->get();
+
+            $summary = collect($transactions)
+                ->where('is_void', 0)
+                ->sum('amount');
+
+            return view('report.girobook.giro_book_report', compact('transactions', 'summary', 'code', 'min', 'max'));
         }
     }
 }

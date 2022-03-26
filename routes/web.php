@@ -31,3 +31,5 @@ Route::get('/report/monthly', [ReportController::class, 'getMonthlyReport'])->mi
 Route::get('/report/periodic', [ReportController::class, 'getPeriodicReport'])->middleware('auth.basic')->name("select_periodic_report");
 
 Route::get('/report/monthperiod', [ReportController::class, 'getMonthlyPeriodicReport'])->middleware('auth.basic')->name("select_monthly_periodic_report");
+
+Route::get('/report/giro', [ReportController::class, 'getGiroBookReport'])->middleware('auth.basic')->name("select_giro_book_report");

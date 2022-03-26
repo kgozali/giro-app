@@ -50,7 +50,7 @@ class TransactionsController extends Controller {
                 "giro_code" => strtoupper(request('giro_code')),
                 "giro_date" => request('giro_date'),
                 "giro_number" => request('giro_number'),
-                "customer_name" => request('store_name'),
+                "customer_name" => strtoupper(request('store_name')),
                 "amount" => (float) str_replace(',', '', request('amount')),
                 "id_period" => request('period'),
                 "is_void" => $is_valid ? 0 : 1
@@ -89,7 +89,7 @@ class TransactionsController extends Controller {
                 "giro_code" => strtoupper(request('giro_code')),
                 "giro_date" => request('giro_date'),
                 "giro_number" => request('giro_number'),
-                "customer_name" => request('store_name'),
+                "customer_name" => strtoupper(request('store_name')),
                 "amount" => (float) str_replace(',', '', request('amount')),
                 "id_period" => request('period'),
                 "is_void" => $is_valid ? 0 : 1

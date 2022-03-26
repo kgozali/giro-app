@@ -23,6 +23,7 @@
             <li><a class="dropdown-item" href="{{ route('select_monthly_report') }}">Monthly</a></li>
             <li><a class="dropdown-item" href="{{ route('select_periodic_report') }}">Periodic</a></li>
             <li><a class="dropdown-item" href="{{ route('select_monthly_periodic_report') }}">Monthly w/ Periodic</a></li>
+            <li><a class="dropdown-item" href="{{ route('select_giro_book_report') }}">Buku Giro</a></li>
         </ul>  
 
         @if(! $transactions->isEmpty())
