@@ -18,9 +18,7 @@
     <div class="dropdown mb-3 d-grid gap-2 d-md-flex justify-content-md-start">
         <button type="button" class="btn btn-primary btn-lg" onclick="window.location='{{ route('new_giro') }}'">Tambah</button>
         
-        <a class="btn btn-success btn-lg dropdown-toggle" href="#" role="button" id="dropdownReport" data-bs-toggle="dropdown" aria-expanded="false">
-            Print
-        </a>
+        <a class="btn btn-success btn-lg dropdown-toggle" href="#" role="button" id="dropdownReport" data-bs-toggle="dropdown" aria-expanded="false"> Laporan</a>
         <ul class="dropdown-menu" aria-labelledby="dropdownReport">
             <li><a class="dropdown-item" href="{{ route('select_monthly_report') }}">Monthly</a></li>
             <li><a class="dropdown-item" href="{{ route('select_periodic_report') }}">Periodic</a></li>
@@ -28,9 +26,7 @@
         </ul>  
 
         @if(! $transactions->isEmpty())
-        <a class="btn btn-secondary btn-lg dropdown-toggle" href="#" role="button" id="dropdownSort" data-bs-toggle="dropdown" aria-expanded="false">
-            Urutkan
-        </a>
+        <a class="btn btn-secondary btn-lg dropdown-toggle" href="#" role="button" id="dropdownSort" data-bs-toggle="dropdown" aria-expanded="false">Urutkan</a>
         <ul class="dropdown-menu" aria-labelledby="dropdownSort">
             <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'id', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Data Terbaru</a></li>
             <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'giro_number', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">No. Giro</a></li>

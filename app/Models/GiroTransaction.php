@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class GiroTransaction extends Model
 {
     protected $table = "giro_transaction";
-    protected $fillable = ['giro_date','giro_number', 'customer_name', 'amount', 'id_period', 'is_void'];
+    protected $fillable = ['giro_date', 'giro_code', 'giro_number', 'customer_name', 'amount', 'id_period', 'is_void'];
 }

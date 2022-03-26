@@ -30,11 +30,14 @@ class TransactionsController extends Controller {
         $is_valid = request('is_void') == null;
         
         $validated = $request->validate([
+            'giro_code' => 'required|size:2',
             'giro_number' => 'required|digits:6',
             'giro_date' => 'required',
             'amount' => 'required',
             'store_name' => 'required'
         ], [
+            'giro_code.required' => 'Isi Kode Giro',
+            'giro_code.size' => 'Kode Giro Harus 2 Digit',
             'giro_number.required' => 'Isi Nomor Giro',
             'giro_number.digits' => 'No. Giro harus 6 digit',
             'giro_date.required' => 'Isi Tgl. Bukaan Giro',
@@ -44,6 +47,7 @@ class TransactionsController extends Controller {
 
         $transaction = GiroTransaction::find($id)
             ->update([
+                "giro_code" => strtoupper(request('giro_code')),
                 "giro_date" => request('giro_date'),
                 "giro_number" => request('giro_number'),
                 "customer_name" => request('store_name'),
@@ -63,11 +67,14 @@ class TransactionsController extends Controller {
         $is_valid = request('is_void') == null;
 
         $validated = $request->validate([
+            'giro_code' => 'required|size:2',
             'giro_number' => 'required|digits:6',
             'giro_date' => 'required',
             'amount' => 'required',
             'store_name' => 'required'
         ], [
+            'giro_code.required' => 'Isi Kode Giro',
+            'giro_code.size' => 'Kode Giro Harus 2 Digit',
             'giro_number.required' => 'Isi Nomor Giro',
             'giro_number.digits' => 'No. Giro harus 6 digit',
             'giro_date.required' => 'Isi Tgl. Bukaan Giro',
@@ -79,6 +86,7 @@ class TransactionsController extends Controller {
 
         if ($giro == null) {
             $param = [
+                "giro_code" => strtoupper(request('giro_code')),
                 "giro_date" => request('giro_date'),
                 "giro_number" => request('giro_number'),
                 "customer_name" => request('store_name'),

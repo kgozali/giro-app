@@ -22,7 +22,8 @@ class ReportController extends Controller {
         } else {
             $date_obj = DateTime::createFromFormat('!m', $month);
             $month_name = Carbon::parse($date_obj)->isoFormat('MMMM');
-            $transactions = GiroTransaction::leftJoin('master_period', function($join) {
+            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, customer_name, is_void')
+                ->leftJoin('master_period', function($join) {
                     $join->on('giro_transaction.id_period', '=', 'master_period.id');
                 })
                 ->whereMonth('giro_date', $month)
@@ -99,9 +100,9 @@ class ReportController extends Controller {
             return view('report.periodic.periodic_report_selection', compact('periods'));
         } else {
             $transactions = GiroTransaction::where('id_period', $period)
-                ->selectRaw("*, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
+                ->selectRaw("giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, customer_name, is_void, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
                 ->where('is_deleted', 0)
-                ->orderBy('giro_number', 'ASC')
+                ->orderByRaw('CONCAT(giro_code, giro_number) ASC')
                 ->get();
 
             $summary = collect($transactions)
@@ -126,7 +127,8 @@ class ReportController extends Controller {
         } else {
             $date_obj = DateTime::createFromFormat('!m', $month);
             $month_name = Carbon::parse($date_obj)->isoFormat('MMMM');
-            $transactions = GiroTransaction::leftJoin('master_period', function($join) {
+            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, customer_name, is_void')
+                ->leftJoin('master_period', function($join) {
                     $join->on('giro_transaction.id_period', '=', 'master_period.id');
                 })
                 ->whereMonth('giro_date', $month)

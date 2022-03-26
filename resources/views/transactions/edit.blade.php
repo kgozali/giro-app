@@ -7,6 +7,15 @@
 
   <form action="{{ route('edit', $transaction->id) }}" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
+
+    <div class="form-group mb-3">
+        <label for="giro_code" class="form-label">Kode Giro</label>
+        <input name="giro_code" type="text" class="form-control {{ ($errors->has('giro_code') ? 'border-danger' : '') }}" id="giro_code" placeholder="Kode Giro" value="{{ $transaction->giro_code }}">
+        @error ('giro_code')
+            <label class="form-label text-danger">{{ $errors->first('giro_code') }}</label>
+        @enderror
+    </div>
+
     <div class="form-group mb-3">
         <label for="giroInput" class="form-label">No. Giro</label>
         <input name="giro_number" type="number" class="form-control {{ ($errors->has('giro_number') ? 'border-danger' : '') }}" id="giroInput" placeholder="Angka 6-Digit Giro" value="{{ $transaction->giro_number }}">
