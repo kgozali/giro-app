@@ -12,7 +12,7 @@ class MainController extends Controller {
         $keyword = request('keyword');
         $sort = request('sort') ?? 'giro_date';
         $sort_order = request('sort_order') ?? 'desc';
-        $transactions = GiroTransaction::selectRaw('giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, customer_name, is_void')
+        $transactions = GiroTransaction::selectRaw('giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name) `customer_name`, is_void')
             ->leftJoin('master_period', function($join) {
                 $join->on('giro_transaction.id_period', '=', 'master_period.id');
             })
@@ -34,10 +34,10 @@ class MainController extends Controller {
                     'amount' => $transaction->amount,
                     'customer_name' => $transaction->customer_name,
                     'is_void' => $transaction->is_void,
-                    'edit_url' => route('view', $transaction->id)
+                    'edit_url' => route('view_giro', $transaction->id)
                 ];
             });
             
-        return view('home', compact('transactions', 'keyword', 'sort', 'sort_order'));
+        return view('giro.home', compact('transactions', 'keyword', 'sort', 'sort_order'));
     }
 }

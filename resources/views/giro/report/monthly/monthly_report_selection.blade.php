@@ -5,7 +5,7 @@
 <body>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    <form method="get" action="/report/monthly" enctype="multipart/form-data">
+    <form method="get" action="{{ route('select_monthly_report_giro') }}" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group mb-3">
             <label for="month" class="form-label font-weight-bold">Bulan</label>

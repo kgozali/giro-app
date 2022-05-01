@@ -6,6 +6,7 @@
 
     <h2 class="mb-3">{{ 'Laporan Buku Giro' }}</h4>
     <h4 class="mb-4 text-muted">{{ $code . $min . ' - ' . $code . $max }}</h4>
+    <p class="mb-4 text-muted text-end">{{ 'Total ' . count($transactions) . '/' . (intval($max) - intval($min) + 1) .  '  Giro' }}</p>
 
     <table class="table table-bordered">
         <thead class="table-light">

@@ -5,7 +5,7 @@
 <body>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-  <form method="post" action="/submit" enctype="multipart/form-data">
+  <form method="post" action="{{ route('submit_giro') }}" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div class="form-group mb-3">
@@ -63,7 +63,7 @@
     </div>
 
     <div class="form-group d-grid gap-2 d-md-flex justify-content-md-end">
-      <button type="button" class="btn btn-danger btn-lg" onclick="window.location='{{ route('index') }}'">Close</button>
+      <button type="button" class="btn btn-danger btn-lg" onclick="window.location='{{ route('giro_index') }}'">Close</button>
       <button type="submit" class="btn btn-primary btn-lg">Save</button>
     </div>
   </form>

@@ -16,20 +16,22 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::get('/', [MainController::class, 'index'])->middleware('auth.basic')->name("index");
+Route::prefix('giro')->group(function() {
+    Route::get('/', [MainController::class, 'index'])->middleware('auth.basic')->name("giro_index");
 
-Route::get('/new', [TransactionsController::class, 'new'])->middleware('auth.basic')->name("new_giro");
-
-Route::get('/view/{id}', [TransactionsController::class, 'view'])->middleware('auth.basic')->name("view");
-
-Route::post('/submit', [TransactionsController::class, 'submit'])->middleware('auth.basic')->name("submit");
-
-Route::post('/submit/edit/{id}', [TransactionsController::class, 'edit'])->middleware('auth.basic')->name("edit");
-
-Route::get('/report/monthly', [ReportController::class, 'getMonthlyReport'])->middleware('auth.basic')->name("select_monthly_report");
-
-Route::get('/report/periodic', [ReportController::class, 'getPeriodicReport'])->middleware('auth.basic')->name("select_periodic_report");
-
-Route::get('/report/monthperiod', [ReportController::class, 'getMonthlyPeriodicReport'])->middleware('auth.basic')->name("select_monthly_periodic_report");
-
-Route::get('/report/giro', [ReportController::class, 'getGiroBookReport'])->middleware('auth.basic')->name("select_giro_book_report");
+    Route::get('/new', [TransactionsController::class, 'new'])->middleware('auth.basic')->name("new_giro");
+    
+    Route::get('/view/{id}', [TransactionsController::class, 'view'])->middleware('auth.basic')->name("view_giro");
+    
+    Route::post('/submit', [TransactionsController::class, 'submit'])->middleware('auth.basic')->name("submit_giro");
+    
+    Route::post('/submit/edit/{id}', [TransactionsController::class, 'edit'])->middleware('auth.basic')->name("edit_giro");
+    
+    Route::get('/monthly', [ReportController::class, 'getMonthlyReport'])->middleware('auth.basic')->name("select_monthly_report_giro");
+    
+    Route::get('/periodic', [ReportController::class, 'getPeriodicReport'])->middleware('auth.basic')->name("select_periodic_report_giro");
+    
+    Route::get('/periodic/month', [ReportController::class, 'getMonthlyPeriodicReport'])->middleware('auth.basic')->name("select_monthly_periodic_report_giro");
+    
+    Route::get('/book', [ReportController::class, 'getGiroBookReport'])->middleware('auth.basic')->name("select_giro_book_report_giro");
+});

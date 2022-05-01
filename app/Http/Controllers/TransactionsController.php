@@ -15,7 +15,7 @@ class TransactionsController extends Controller {
         $periods = Period::where('is_active', 1)
             ->orderBy('id', 'DESC')
             ->get();
-        return view('transactions.new', compact('periods'));
+        return view('giro.transactions.new', compact('periods'));
     }
 
     public function view($id) {
@@ -23,7 +23,7 @@ class TransactionsController extends Controller {
             ->orderBy('id', 'DESC')
             ->get();
         $transaction = GiroTransaction::where('id', $id)->first();
-        return view('transactions.edit', compact('transaction', 'periods'));
+        return view('giro.transactions.edit', compact('transaction', 'periods'));
     }
 
     public function edit($id, Request $request) {
@@ -60,7 +60,7 @@ class TransactionsController extends Controller {
             Alert::success('Berhasil!', "Data Berhasil Diubah");
         }
 
-        return redirect()->route('index');
+        return redirect()->route('giro_index');
     }
 
     public function submit(Request $request) {

@@ -17,11 +17,11 @@ class ReportController extends Controller {
         $year = request('year');
 
         if ($month == null || $year == null) {
-            return view('report.monthly.monthly_report_selection');
+            return view('giro.report.monthly.monthly_report_selection');
         } else {
             $date_obj = DateTime::createFromFormat('!m', $month);
             $month_name = Carbon::parse($date_obj)->isoFormat('MMMM');
-            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name), is_void')
+            $transactions = GiroTransaction::selectRaw('giro_transaction.id, master_period.name, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name) `customer_name`, is_void')
                 ->leftJoin('master_period', function($join) {
                     $join->on('giro_transaction.id_period', '=', 'master_period.id');
                 })
@@ -85,7 +85,7 @@ class ReportController extends Controller {
                     ];
                 });
 
-            return view('report.monthly.monthly_report', compact('transactions', 'summary', 'subtotal', 'month_name', 'year', 'total_amount'));
+            return view('giro.report.monthly.monthly_report', compact('transactions', 'summary', 'subtotal', 'month_name', 'year', 'total_amount'));
         }
     }
 
@@ -96,7 +96,7 @@ class ReportController extends Controller {
             $periods = Period::where('is_active', 1)
                 ->orderBy('id', 'DESC')
                 ->get();
-            return view('report.periodic.periodic_report_selection', compact('periods'));
+            return view('giro.report.periodic.periodic_report_selection', compact('periods'));
         } else {
             $transactions = GiroTransaction::where('id_period', $period)
                 ->selectRaw("giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name) `customer_name`, is_void, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
@@ -109,7 +109,7 @@ class ReportController extends Controller {
                 ->sum('amount');
             $period = Period::whereId($period)->first();
 
-            return view('report.periodic.periodic_report', compact('transactions', 'summary', 'period'));
+            return view('giro.report.periodic.periodic_report', compact('transactions', 'summary', 'period'));
         }
     }
 
@@ -122,7 +122,7 @@ class ReportController extends Controller {
             $periods = Period::where('is_active', 1)
                 ->orderBy('id', 'DESC')
                 ->get();
-            return view('report.periodic.monthly_periodic_report_selection', compact('periods'));
+            return view('giro.report.periodic.monthly_periodic_report_selection', compact('periods'));
         } else {
             $date_obj = DateTime::createFromFormat('!m', $month);
             $month_name = Carbon::parse($date_obj)->isoFormat('MMMM');
@@ -193,7 +193,7 @@ class ReportController extends Controller {
                     ];
                 });
 
-            return view('report.monthly.monthly_report', compact('transactions', 'summary', 'subtotal', 'month_name', 'year', 'total_amount'));
+            return view('giro.report.monthly.monthly_report', compact('transactions', 'summary', 'subtotal', 'month_name', 'year', 'total_amount'));
         }
     }
 
@@ -206,7 +206,7 @@ class ReportController extends Controller {
             $giro_codes = GiroTransaction::select('giro_code')
                 ->groupBy('giro_code')
                 ->get();
-            return view('report.girobook.giro_book_selection', compact('giro_codes'));
+            return view('giro.report.girobook.giro_book_selection', compact('giro_codes'));
         } else {
             $transactions = GiroTransaction::selectRaw("giro_transaction.id, created_at, CONCAT(giro_code, giro_number) AS giro_number, giro_date, amount, UPPER(customer_name) `customer_name`, is_void, IF(is_void = 1, 'BATAL / VOID', '') AS `status`")
                 ->whereRaw("CONVERT(giro_number, UNSIGNED) BETWEEN ? AND ?", [$min, $max])
@@ -219,7 +219,7 @@ class ReportController extends Controller {
                 ->where('is_void', 0)
                 ->sum('amount');
 
-            return view('report.girobook.giro_book_report', compact('transactions', 'summary', 'code', 'min', 'max'));
+            return view('giro.report.girobook.giro_book_report', compact('transactions', 'summary', 'code', 'min', 'max'));
         }
     }
 }

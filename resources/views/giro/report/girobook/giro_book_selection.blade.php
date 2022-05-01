@@ -5,7 +5,7 @@
 <body>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    <form method="GET" action="/report/giro" enctype="multipart/form-data">
+    <form method="GET" action="{{ route('select_giro_book_report_giro') }}" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group mb-3">
             <label for="month" class="form-label font-weight-bold">Kode Giro</label>

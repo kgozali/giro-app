@@ -20,21 +20,21 @@
         
         <a class="btn btn-success btn-lg dropdown-toggle" href="#" role="button" id="dropdownReport" data-bs-toggle="dropdown" aria-expanded="false"> Laporan</a>
         <ul class="dropdown-menu" aria-labelledby="dropdownReport">
-            <li><a class="dropdown-item" href="{{ route('select_monthly_report') }}">Monthly</a></li>
-            <li><a class="dropdown-item" href="{{ route('select_periodic_report') }}">Periodic</a></li>
-            <li><a class="dropdown-item" href="{{ route('select_monthly_periodic_report') }}">Monthly w/ Periodic</a></li>
-            <li><a class="dropdown-item" href="{{ route('select_giro_book_report') }}">Buku Giro</a></li>
+            <li><a class="dropdown-item" href="{{ route('select_monthly_report_giro') }}">Monthly</a></li>
+            <li><a class="dropdown-item" href="{{ route('select_periodic_report_giro') }}">Periodic</a></li>
+            <li><a class="dropdown-item" href="{{ route('select_monthly_periodic_report_giro') }}">Monthly w/ Periodic</a></li>
+            <li><a class="dropdown-item" href="{{ route('select_giro_book_report_giro') }}">Buku Giro</a></li>
         </ul>  
 
         @if(! $transactions->isEmpty())
         <a class="btn btn-secondary btn-lg dropdown-toggle" href="#" role="button" id="dropdownSort" data-bs-toggle="dropdown" aria-expanded="false">Urutkan</a>
         <ul class="dropdown-menu" aria-labelledby="dropdownSort">
-            <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'id', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Data Terbaru</a></li>
-            <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'giro_number', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">No. Giro</a></li>
-            <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'giro_date', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Tgl. Giro Terbaru</a></li>
-            <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'giro_date', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">Tgl. Giro Terlama</a></li>
-            <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'amount', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Nominal Terbesar</a></li>
-            <li><a class="dropdown-item" href="{{ route('index', ['sort' => 'amount', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">Nominal Terkecil</a></li>
+            <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'id', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Data Terbaru</a></li>
+            <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'giro_number', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">No. Giro</a></li>
+            <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'giro_date', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Tgl. Giro Terbaru</a></li>
+            <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'giro_date', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">Tgl. Giro Terlama</a></li>
+            <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'amount', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Nominal Terbesar</a></li>
+            <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'amount', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">Nominal Terkecil</a></li>
         </ul>  
         @endif 
     </div>
