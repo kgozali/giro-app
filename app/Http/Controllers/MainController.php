@@ -8,6 +8,10 @@ use App\Models\GiroTransaction;
 use Illuminate\Routing\Redirector;
 
 class MainController extends Controller {
+    public function welcome() {
+        return view('welcome');
+    }
+
     public function index() {
         $keyword = request('keyword');
         $sort = request('sort') ?? 'giro_date';

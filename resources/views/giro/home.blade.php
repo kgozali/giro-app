@@ -3,9 +3,6 @@
 @section('title', 'Dashboard')
 @section('content')
 <body>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- <link href="css/bootstrap.css" rel="stylesheet">     -->
-
     <form method="get" action="/" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <input name="keyword" type="text" class="form-control" placeholder="Cari Transaksi" aria-label="Search For Giro" aria-describedby="button-addon2" value="{{ $keyword }}">
@@ -14,19 +11,8 @@
     </form>
     
 
-   
-    <div class="dropdown mb-3 d-grid gap-2 d-md-flex justify-content-md-start">
-        <button type="button" class="btn btn-primary btn-lg" onclick="window.location='{{ route('new_giro') }}'">Tambah</button>
-        
-        <a class="btn btn-success btn-lg dropdown-toggle" href="#" role="button" id="dropdownReport" data-bs-toggle="dropdown" aria-expanded="false"> Laporan</a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownReport">
-            <li><a class="dropdown-item" href="{{ route('select_monthly_report_giro') }}">Monthly</a></li>
-            <li><a class="dropdown-item" href="{{ route('select_periodic_report_giro') }}">Periodic</a></li>
-            <li><a class="dropdown-item" href="{{ route('select_monthly_periodic_report_giro') }}">Monthly w/ Periodic</a></li>
-            <li><a class="dropdown-item" href="{{ route('select_giro_book_report_giro') }}">Buku Giro</a></li>
-        </ul>  
-
-        @if(! $transactions->isEmpty())
+    @if(! $transactions->isEmpty())
+    <div class="dropdown mb-3 d-grid gap-2 d-md-flex justify-content-md-start">        
         <a class="btn btn-secondary btn-lg dropdown-toggle" href="#" role="button" id="dropdownSort" data-bs-toggle="dropdown" aria-expanded="false">Urutkan</a>
         <ul class="dropdown-menu" aria-labelledby="dropdownSort">
             <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'id', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Data Terbaru</a></li>
@@ -35,9 +21,9 @@
             <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'giro_date', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">Tgl. Giro Terlama</a></li>
             <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'amount', 'sort_order' => 'desc', 'keyword' => $keyword]) }}">Nominal Terbesar</a></li>
             <li><a class="dropdown-item" href="{{ route('giro_index', ['sort' => 'amount', 'sort_order' => 'asc', 'keyword' => $keyword]) }}">Nominal Terkecil</a></li>
-        </ul>  
-        @endif 
+        </ul>
     </div>
+    @endif 
     
 
     @if(! $transactions->isEmpty())
@@ -67,9 +53,6 @@
     <div class="d-flex justify-content-center">
         {!! $transactions->appends(request()->input())->links() !!}
     </div>
-    @endif
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    @endif  
 </body> 
 @endsection

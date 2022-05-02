@@ -16,6 +16,8 @@ use App\Http\Controllers\ReportController;
 |
 */
 
+Route::get('/', [MainController::class, 'welcome'])->middleware('auth.basic')->name("welcome");
+
 Route::prefix('giro')->group(function() {
     Route::get('/', [MainController::class, 'index'])->middleware('auth.basic')->name("giro_index");
 
