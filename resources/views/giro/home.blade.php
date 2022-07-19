@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 @section('content')
 <body>
-    <form method="get" action="/" enctype="multipart/form-data">
+    <form method="get" action="{{ route('giro_index', ['keyword' => $keyword]) }}" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <input name="keyword" type="text" class="form-control" placeholder="Cari Transaksi" aria-label="Search For Giro" aria-describedby="button-addon2" value="{{ $keyword }}">
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
